@@ -11,6 +11,10 @@ function MyRun() {
 
 util.inherits(MyRun, GoRun);
 
+var noop = function() {
+  //
+};
+
 describe("GoRun", function() {
   var args;
   var start = 0;
@@ -24,7 +28,10 @@ describe("GoRun", function() {
     start++;
 
     return {
-      pid: pid
+      pid:     pid,
+      stdout:  {on: noop},
+      stderr:  {on: noop},
+      on:      noop
     };
   };
 
