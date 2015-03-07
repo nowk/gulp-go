@@ -37,8 +37,8 @@ var fshut = function(callback) {
     var pid = go.proc.pid;
 
     go.stop(function() {
-      delps(pid); // delete from ps collection
-      fshut();    // shutdown the next process
+      delps(pid);      // delete from ps collection
+      fshut(callback); // shutdown the next process
     });
   }
 };
