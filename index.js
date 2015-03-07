@@ -81,6 +81,10 @@ GoRun.prototype._spawn = function() {
   return spawn("go", args, this.opts);
 };
 
+var noop = function() {
+  //
+};
+
 GoRun.prototype.run = function() {
   var args = ["run", this.main];
   args = args.concat(this.args, Array.prototype.slice.call(arguments));
@@ -88,6 +92,11 @@ GoRun.prototype.run = function() {
   var proc = this.proc = this._spawn.apply(this, args);
   var pid = proc.pid;
   log("["+pid+"]", "processs started");
+
+  proc.stdout.on("data", this.opts.onStdout || noop);
+  proc.stderr.on("data", this.opts.onStderr || noop);
+  proc.on("close", this.opts.onClose || noop);
+  proc.on("exit", this.opts.onExit || noop);
 
   return addps(pid, this);
 };
