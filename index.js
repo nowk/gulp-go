@@ -29,7 +29,8 @@ function addps(pid, go) {
 var fshut = function(callback) {
   var keys = Object.keys(ps);
   if (keys.length === 0) {
-    return callback();
+    callback();
+    return;
   }
 
   var go = ps[keys[0]];
@@ -104,7 +105,8 @@ GoRun.prototype.run = function() {
 GoRun.prototype._stop = function(callback) {
   if (!!!this.proc.pid) {
     log("no pid:", "exit");
-    return callback();
+    callback();
+    return;
   }
 
   var pid = this.proc.pid;
