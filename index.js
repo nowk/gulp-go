@@ -29,7 +29,9 @@ function addps(pid, go) {
 var fshut = function(callback) {
   var keys = Object.keys(ps);
   if (keys.length === 0) {
-    callback();
+    if ("function" === typeof callback) {
+      callback();
+    }
     return;
   }
 
@@ -105,6 +107,7 @@ GoRun.prototype.run = function() {
 GoRun.prototype._stop = function(callback) {
   if (!!!this.proc.pid) {
     log("no pid:", "exit");
+
     callback();
     return;
   }
@@ -125,6 +128,7 @@ GoRun.prototype._stop = function(callback) {
         i++;
         if (i === len) {
           log("["+pid+"]", "process stopped");
+
           callback();
           return;
         }
@@ -138,9 +142,14 @@ GoRun.prototype._stop = function(callback) {
 };
 
 GoRun.prototype.stop = function(callback) {
+  if ("function" !== typeof callback) {
+    callback = noop;
+  }
+
   var pid = this.proc.pid;
   log("["+pid+"]", "stopping process...");
 
+  var self = this;
   var fn = function() {
     delps(pid);
 
@@ -151,10 +160,12 @@ GoRun.prototype.stop = function(callback) {
 };
 
 GoRun.prototype.restart = function() {
-  var self = this;
-  log("["+this.proc.pid+"]", "restarting process...");
+  var pid = this.proc.pid;
+  log("["+pid+"]", "restarting process...");
 
+  var self = this;
   self.stop(function() {
     self.run();
   });
 };
+
