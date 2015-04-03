@@ -70,6 +70,9 @@ module.exports = {
 // GoRun is the runner class for a single `go run ...` process
 function GoRun(main, args, opts) {
   this.main = main || "main.go";
+  if (typeof(this.main) == 'string') {
+    this.main = [this.main];
+  }
   this.args = args || [];
   this.opts = opts || {};
 }
@@ -86,7 +89,7 @@ var noop = function() {
 };
 
 GoRun.prototype.run = function() {
-  var args = ["run", this.main];
+  var args = ["run"].concat(this.main);
   args = args.concat(this.args, Array.prototype.slice.call(arguments));
 
   var proc = this.proc = this._spawn.apply(this, args);
