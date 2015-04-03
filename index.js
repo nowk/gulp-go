@@ -96,8 +96,12 @@ GoRun.prototype.run = function() {
   var pid = proc.pid;
   log("["+pid+"]", "processs started");
 
-  proc.stdout.on("data", this.opts.onStdout || noop);
-  proc.stderr.on("data", this.opts.onStderr || noop);
+  if (proc.stdout) {
+    proc.stdout.on("data", this.opts.onStdout || noop);
+  }
+  if (proc.stderr) {
+    proc.stderr.on("data", this.opts.onStderr || noop);
+  }
   proc.on("close", this.opts.onClose || noop);
   proc.on("exit", this.opts.onExit || noop);
 
