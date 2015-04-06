@@ -17,7 +17,7 @@
     var go;
 
     gulp.task("go-run", function() {
-      go = gulpgo.run("main.go", ["--arg1", "value1"], {cwd: __dirname});
+      go = gulpgo.run("main.go", ["--arg1", "value1"], {cwd: __dirname, stdio: 'inherit'});
     });
 
     gulp.task("devs", ["go-run"], function() {
