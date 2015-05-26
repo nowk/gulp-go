@@ -81,7 +81,13 @@ GoRun.prototype._spawn = function() {
   var args = Array.prototype.slice.call(arguments);
   log("starting process...");
 
-  return spawn("go", args, this.opts);
+  if (this.opts.godep) {
+    log("using `godep go`");
+    args.unshift("go");
+    return spawn("godep", args, this.opts);
+  } else {
+    return spawn("go", args, this.opts);
+  }
 };
 
 var noop = function() {
@@ -172,4 +178,3 @@ GoRun.prototype.restart = function() {
     self.run();
   });
 };
-
