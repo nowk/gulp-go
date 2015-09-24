@@ -1,4 +1,7 @@
 
+build-docker:
+	docker build --rm -t gulp-go-env .
+
 sample:
 	cd ./sample && ../node_modules/.bin/gulp devs
 

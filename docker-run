@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+exec docker run \
+	-v $(pwd):/src \
+	--rm -it gulp-go-env "$@"
+
+# vim: set filetype=sh :
