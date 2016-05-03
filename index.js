@@ -61,14 +61,19 @@ module.exports = {
     return ps;
   },
   run: function(main, args, opts) {
-    var go = new GoRun(main, args, opts);
+    var go = new GoRun("run", main, args, opts);
+    return go.run();
+  },
+  test: function(package, args, opts) {
+    var go = new GoRun("test", package, args, opts);
     return go.run();
   },
   GoRun: GoRun
 };
 
 // GoRun is the runner class for a single `go run ...` process
-function GoRun(main, args, opts) {
+function GoRun(cmd, main, args, opts) {
+  this.cmd = cmd || "run";
   this.main = main || "main.go";
   if (typeof(this.main) == 'string') {
     this.main = [this.main];
@@ -95,7 +100,7 @@ var noop = function() {
 };
 
 GoRun.prototype.run = function() {
-  var args = ["run"].concat(this.main);
+  var args = [this.cmd].concat(this.main);
   args = args.concat(this.args, Array.prototype.slice.call(arguments));
 
   var proc = this.proc = this._spawn.apply(this, args);
