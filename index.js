@@ -125,7 +125,8 @@ GoRun.prototype._stop = function(callback) {
   var pid = this.proc.pid;
   treeKill(pid, 'SIGKILL', function(err) {
     if(err) {
-      console.log(err);
+      log(err);
+	  callback();
     } else {
       log("["+pid+"]", "process stopped");
       callback();
