@@ -1,4 +1,4 @@
-var pstree = require("ps-tree");
+var treeKill = require("tree-kill");
 var spawn  = require("child_process").spawn;
 var exec   = require("child_process").exec;
 
@@ -123,32 +123,11 @@ GoRun.prototype._stop = function(callback) {
   }
 
   var pid = this.proc.pid;
-  pstree(pid, function (err, children) {
-    var i = 0;
-    var len = children.length;
-
-    var kill = function(n) {
-      var child = children[n];
-      if (!!!child) {
-        callback();
-        return;
-      }
-
-      exec("kill " + child.PID, function() {
-        i++;
-        if (i === len) {
-          log("["+pid+"]", "process stopped");
-
-          callback();
-          return;
-        }
-
-        kill(i);
-      });
-    };
-
-    kill(i);
+  treeKill(1, 'SIGKILL', function(err) {
+    log("["+pid+"]", "process stopped");
+    callback();
   });
+
 };
 
 GoRun.prototype.stop = function(callback) {
