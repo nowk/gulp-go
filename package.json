@@ -27,5 +27,10 @@
   },
   "dependencies": {
     "tree-kill": "^1.1.0"
+  },
+  "jspm": {
+    "dependencies": {
+      "tree-kill": "npm:tree-kill@^1.1.0"
+    }
   }
 }
