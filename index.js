@@ -123,9 +123,13 @@ GoRun.prototype._stop = function(callback) {
   }
 
   var pid = this.proc.pid;
-  treeKill(1, 'SIGKILL', function(err) {
-    log("["+pid+"]", "process stopped");
-    callback();
+  treeKill(pid, 'SIGKILL', function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+      log("["+pid+"]", "process stopped");
+      callback();
+    }
   });
 
 };

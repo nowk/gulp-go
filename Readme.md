@@ -17,7 +17,11 @@
     var go;
 
     gulp.task("go-run", function() {
-      go = gulpgo.run("main.go", ["--arg1", "value1"], {cwd: __dirname, stdio: 'inherit'});
+      go = gulpgo.run("main.go", ["--arg1", "value1"], {
+	    cwd: __dirname,
+	    onStdout: function(buffer) { console.log(buffer.toString('utf8')); },
+	    onStderr:  function(buffer) { console.error(buffer.toString('utf8')); }
+	  });
     });
 
     gulp.task("devs", ["go-run"], function() {
